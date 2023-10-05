@@ -1,0 +1,251 @@
+﻿<Window x:Class="UKasse.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:UKasse"
+        mc:Ignorable="d"
+        Title="MainWindow"
+        WindowState="Maximized">
+    <Grid>
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="80"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Menu Grid.ColumnSpan="2">
+            <MenuItem
+    Header="_File">
+                <MenuItem 
+      Header="Add"
+      Icon="{materialDesign:PackIcon Kind=Add}">
+                    <MenuItem Header="Product"  Click="AddProductViewOpen"/>
+                    <MenuItem Header="Product type"  Click="AddProductTypeViewOpen"/>
+                </MenuItem>
+                <MenuItem
+      Header="Delete" 
+                    Icon="{materialDesign:PackIcon Kind=Delete}">
+                    <MenuItem Header="Product" Click="DeleteProductEvent"/>
+                    <MenuItem Header="Product's type" Click="DeleteProductsTypeEvent"/>
+                </MenuItem>
+                <MenuItem
+      Header="Exit"
+      Icon="{materialDesign:PackIcon Kind=ExitToApp}"
+      InputGestureText="Ctrl+E" 
+                    Click="ExitAppClicked"/>
+                <Separator />
+                <MenuItem
+      Header="Excellent"
+      IsCheckable="True"
+      IsChecked="True" />
+                <MenuItem
+      Header="Rubbish"
+      IsCheckable="True" />
+                <MenuItem
+      Header="Dig Deeper"
+      InputGestureText="Ctrl+D">
+                    <MenuItem
+        Header="Enlightenment?"
+        IsCheckable="True" />
+                    <MenuItem
+        Header="Disappointment"
+        IsCheckable="True" />
+                </MenuItem>
+                <MenuItem
+      Header="Look Deeper"
+      InputGestureText="Ctrl+D">
+                    <MenuItem
+        Header="Plain" />
+                    <MenuItem
+        Header="Ice Cream" />
+                </MenuItem>
+            </MenuItem>
+            <MenuItem
+    Header="_Edit">
+                <MenuItem
+      Command="Cut"
+      Header="_Cut"
+      Icon="{materialDesign:PackIcon Kind=ContentCut}" />
+                <MenuItem
+      Command="Copy"
+      Header="_Copy"
+      Icon="{materialDesign:PackIcon Kind=ContentCopy}" />
+                <MenuItem
+      Command="Paste"
+      Header="_Paste"
+      Icon="{materialDesign:PackIcon Kind=ContentPaste}" />
+            </MenuItem>
+        </Menu>
+        <DataGrid Grid.Row="1" Grid.Column="1" Name="HeadersDG" HeadersVisibility="None"  AutoGenerateColumns="False"
+                  HorizontalScrollBarVisibility="Disabled"
+                  CanUserAddRows="False"
+                  VerticalScrollBarVisibility="Auto">
+            <DataGrid.ColumnHeaderStyle>
+                <Style TargetType="{x:Type DataGridColumnHeader}">
+                    <Setter Property="LayoutTransform">
+                        <Setter.Value>
+                            <TransformGroup>
+                                <RotateTransform Angle="90"/>
+                            </TransformGroup>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </DataGrid.ColumnHeaderStyle>
+            <DataGrid.LayoutTransform>
+                <TransformGroup>
+                    <RotateTransform Angle="-90"/>
+                </TransformGroup>
+            </DataGrid.LayoutTransform>
+            <DataGrid.Columns>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="{Binding Path=Name}" Click="PTypeClicked" Tag="{Binding Product}" Width="100" Height="80" VerticalAlignment="Bottom">
+                                <Button.LayoutTransform>
+                                    <RotateTransform Angle="90"/>
+                                </Button.LayoutTransform>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <ScrollViewer  Grid.Row="2" Grid.Column="1" >
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <DataGrid Name="ProductsDG1"
+                           
+                           
+                           Grid.Column="0" AutoGenerateColumns="False" VerticalScrollBarVisibility="Disabled" CanUserAddRows="False" >
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="{Binding Path=Name}" Width="150" Height="80" Click="ProductTyped1"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <DataGrid  Name="ProductsDG2" 
+                          CanUserAddRows="False"
+                           Grid.Column="1" AutoGenerateColumns="False" VerticalScrollBarVisibility="Disabled">
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="{Binding Path=Name}" Width="150" Height="80" Click="ProductTyped2"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <DataGrid  Name="ProductsDG3" 
+                           CanUserAddRows="False"
+                           Grid.Column="2" AutoGenerateColumns="False" VerticalScrollBarVisibility="Disabled">
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="{Binding Path=Name}" Width="150" Height="80" Click="ProductTyped3"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <DataGrid  Name="ProductsDG4"
+                           CanUserAddRows="False" 
+                           Grid.Column="3" AutoGenerateColumns="False" VerticalScrollBarVisibility="Disabled">
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="{Binding Path=Name}" Width="150" Height="80" Click="ProductTyped4"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <DataGrid  Name="ProductsDG5" Grid.Column="4"
+                           AutoGenerateColumns="False" VerticalScrollBarVisibility="Disabled"
+                           CanUserAddRows="False"
+                           >
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="{Binding Path=Name}" Width="150" Height="80" Click="ProductTyped5"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </ScrollViewer>
+        
+        <ScrollViewer Grid.Column="0" Grid.Row="2">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="120"/>
+                </Grid.RowDefinitions>
+                <DataGrid 
+                ItemsSource="{Binding SelectedProducts, NotifyOnSourceUpdated=True}"
+                Name="SelectedProductsDG"
+                AutoGenerateColumns="False"
+                HeadersVisibility="None"
+                VerticalScrollBarVisibility="Hidden"
+                HorizontalScrollBarVisibility="Disabled"
+                CanUserAddRows="False"
+                Grid.Row="0"
+                >
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding Path=Name}" Width=".8*" FontWeight="Bold" FontSize="20"/>
+                        <DataGridTemplateColumn>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Style="{StaticResource MaterialDesignFloatingActionMiniSecondaryLightButton}" Click="DeleteFromList">
+                                        <materialDesign:PackIcon Kind="AlphaXCircleOutline"/>
+                                    </Button>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <StackPanel Grid.Row="1" Orientation="Horizontal">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="50"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.Column="1" FontSize="18" FontWeight="Bold" FontStyle="Oblique" Name="PriceTextBox" />
+                        <Button Name="GoToPayButton" Content="Gesamt" FontSize="20" FontWeight="Bold" Grid.Row="1" Click="GoToPay" />
+                    </Grid>
+                    
+                </StackPanel>
+            </Grid>
+           
+        </ScrollViewer>
+        
+        
+    </Grid>
+</Window>
