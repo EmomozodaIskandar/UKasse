@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Configuration;
+using System.ComponentModel;
 
 namespace UKasse.Views
 {
@@ -22,20 +23,25 @@ namespace UKasse.Views
     public partial class ProductType : Window
     {
         SQLiteConnection connection;
-        public ProductType()
+        MainWindow window;
+        public ProductType( MainWindow n)
         {
             InitializeComponent();
             connection = new SQLiteConnection(ConfigurationManager.ConnectionStrings["connection"].ConnectionString);
             connection.Open();
+            window = n;
         }
 
         private void Cancel(object sender, RoutedEventArgs e)
         {
-            MainWindow window = new MainWindow();
-            window.ShowDialog();
+            window.Create();
             this.Close();
         }
-
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            window.Create();
+            base.OnClosing(e);
+        }
         private void ok(object sender, RoutedEventArgs e)
         {
             try
@@ -53,8 +59,7 @@ namespace UKasse.Views
                     }
                     else
                     {
-                        MainWindow window = new MainWindow();
-                        window.ShowDialog();
+                        window.Create();
                         this.Close();
                     }
                 }

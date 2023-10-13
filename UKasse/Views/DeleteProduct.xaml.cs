@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Configuration;
 using System.Data;
+using System.ComponentModel;
 
 namespace UKasse.Views
 {
@@ -23,12 +24,19 @@ namespace UKasse.Views
     public partial class DeleteProduct : Window
     {
         SQLiteConnection conn;
-        public DeleteProduct()
+        MainWindow win;
+        public DeleteProduct(MainWindow window)
         {
             InitializeComponent();
             conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["connection"].ConnectionString);
             conn.Open();
             FillProductsDg();
+            win = window;
+        }
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            win.Create();
+            base.OnClosing(e);
         }
 
         private void SearchProduct(object sender, TextChangedEventArgs e)

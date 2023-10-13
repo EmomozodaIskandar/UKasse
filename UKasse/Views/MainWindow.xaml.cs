@@ -11,7 +11,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Data;
 using System.Data.SQLite;
 using System.Data.Common;
@@ -19,6 +18,9 @@ using System.Configuration;
 using UKasse.Classes;
 using System.Collections.ObjectModel;
 using UKasse.Views;
+using System.IO;
+using Microsoft.VisualBasic;
+using Microsoft.Win32;
 
 namespace UKasse
 {
@@ -57,6 +59,7 @@ namespace UKasse
             {
                 using(SQLiteConnection connection = new SQLiteConnection(_connection))
                 {
+                    PTypes.Clear();
                     var cmd = new SQLiteCommand(connection);
                     cmd.CommandType = CommandType.Text;
                     cmd.CommandText = "Select * from PType";
@@ -70,6 +73,9 @@ namespace UKasse
                     }
                     HeadersDG.ItemsSource = PTypes;
                     HeadersDG.Items.Refresh();
+
+                    ptypeclickedFun(true);
+
                 }
             }
             catch (Exception ex)
@@ -82,20 +88,30 @@ namespace UKasse
         {
             this.Close();
         }
-
-        private void PTypeClicked(object sender, RoutedEventArgs e)
+        private void ptypeclickedFun(bool isOffenButton = false)
         {
             try
             {
-
-                PType? row = HeadersDG.SelectedItems[0] as PType;
-                int PTid = row.Id;
+                int PTid;
                 using (SQLiteConnection connection = new SQLiteConnection(_connection))
                 {
                     SQLiteCommand? cmd = new SQLiteCommand(connection);
-                    cmd.CommandText = "Select * from Product where PTypeId = @param1;";
-                    cmd.CommandType = CommandType.Text;
-                    cmd.Parameters.Add(new SQLiteParameter("@param1", PTid));
+                    if (!isOffenButton)
+                    {
+                        PType? row = HeadersDG.SelectedItems[0] as PType;
+                        PTid = row.Id;
+                        cmd.CommandText = "Select * from Product where PTypeId = @param1;";
+                        cmd.CommandType = CommandType.Text;
+                        cmd.Parameters.Add(new SQLiteParameter("@param1", PTid));
+                    }
+                        
+                    else
+                    {
+                        cmd.CommandText = "select * from product where isOffen=1;";
+                        cmd.CommandType = CommandType.Text;
+                    }
+
+                    
                     SQLiteDataReader reader = cmd.ExecuteReader();
                     List<Product> products1 = new List<Product>();
                     List<Product> products2 = new List<Product>();
@@ -104,10 +120,10 @@ namespace UKasse
                     List<Product> products5 = new List<Product>();
                     if (reader.HasRows)
                     {
-                        int i = 0; 
+                        int i = 0;
                         while (reader.Read())
                         {
-                            if(i == 0)
+                            if (i == 0)
                             {
                                 products1.Add(new Product
                                 {
@@ -116,11 +132,11 @@ namespace UKasse
                                     isOffen = Convert.ToBoolean(reader["isOffen"]),
                                     Name = Convert.ToString(reader["Name"]),
                                     Price = Convert.ToString(reader["Price"]),
-                                    PTypeId = PTid
+                                    PTypeId = Convert.ToInt32(reader["PTypeId"])
                                 });
                                 i++;
                             }
-                            else if(i == 1)
+                            else if (i == 1)
                             {
                                 products2.Add(new Product
                                 {
@@ -129,7 +145,7 @@ namespace UKasse
                                     isOffen = Convert.ToBoolean(reader["isOffen"]),
                                     Name = Convert.ToString(reader["Name"]),
                                     Price = Convert.ToString(reader["Price"]),
-                                    PTypeId = PTid
+                                    PTypeId = Convert.ToInt32(reader["PTypeId"])
                                 });
                                 i++;
                             }
@@ -142,7 +158,7 @@ namespace UKasse
                                     isOffen = Convert.ToBoolean(reader["isOffen"]),
                                     Name = Convert.ToString(reader["Name"]),
                                     Price = Convert.ToString(reader["Price"]),
-                                    PTypeId = PTid
+                                    PTypeId = Convert.ToInt32(reader["PTypeId"])
                                 });
                                 i++;
                             }
@@ -155,7 +171,7 @@ namespace UKasse
                                     isOffen = Convert.ToBoolean(reader["isOffen"]),
                                     Name = Convert.ToString(reader["Name"]),
                                     Price = Convert.ToString(reader["Price"]),
-                                    PTypeId = PTid
+                                    PTypeId = Convert.ToInt32(reader["PTypeId"])
                                 });
                                 i++;
                             }
@@ -168,7 +184,7 @@ namespace UKasse
                                     isOffen = Convert.ToBoolean(reader["isOffen"]),
                                     Name = Convert.ToString(reader["Name"]),
                                     Price = Convert.ToString(reader["Price"]),
-                                    PTypeId = PTid
+                                    PTypeId = Convert.ToInt32(reader["PTypeId"])
                                 });
                                 i = 0;
                             }
@@ -185,11 +201,18 @@ namespace UKasse
                     ProductsDG4.Items.Refresh();
                     ProductsDG5.Items.Refresh();
                 }
+
+                
+                
             }
-            catch( Exception ex )
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+        private void PTypeClicked(object sender, RoutedEventArgs e)
+        {
+            ptypeclickedFun();
         }
         private void DeleteFromList(object sender, RoutedEventArgs e)
         {
@@ -259,7 +282,14 @@ namespace UKasse
             {
                 try
                 {
-
+                    List<string> strings = new List<string>();
+                    foreach (Product p in SelectedProducts)
+                    {
+                        strings.Add(p.Name);
+                    }
+                    Pay pay = new Pay(this,strings);
+                    pay.Show();
+                    this.Visibility = Visibility.Hidden;
                 }
                 catch (Exception ex)
                 {
@@ -273,9 +303,9 @@ namespace UKasse
         {
             try
             {
-                Window window = new AddProduct();
+                Window window = new AddProduct(this);
                 window.ShowDialog();
-                this.Close();
+                
             }
             catch(Exception ex)
             {
@@ -287,9 +317,10 @@ namespace UKasse
         {
             try
             {
-                Window window = new ProductType();
+
+                MainWindow n = this;
+                Window window = new ProductType(n);
                 window.ShowDialog();
-                this.Close();
             }
             catch(Exception ex)
             {
@@ -306,7 +337,7 @@ namespace UKasse
         Beachten Sie, dass alle Produkten
     die diese Produkttyp haben werden gelöscht.
                                             ");
-                DeleteProductsType deleteProduct = new DeleteProductsType();
+                DeleteProductsType deleteProduct = new DeleteProductsType(this);
                 deleteProduct.ShowDialog();
             }
             catch(Exception ex)
@@ -319,13 +350,68 @@ namespace UKasse
         {
             try
             {
-                DeleteProduct deleteProduct = new DeleteProduct();
+                DeleteProduct deleteProduct = new DeleteProduct(this);
                 deleteProduct.ShowDialog();
             }
             catch(Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void backup(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                
+                string[] connstring = ConfigurationManager.ConnectionStrings["connection"].ConnectionString.Split(';');
+                string fileName = connstring[0].Split('=')[1];
+                SaveFileDialog savefile = new SaveFileDialog();
+                // set a default file name
+                savefile.FileName = "UKasse.sqlite";
+                // set filters - this can be done in properties as well
+                savefile.Filter = "Text files (*.sqlite)|*.sqlite|All files (*.*)|*.*";
+                bool? userClickedOK = savefile.ShowDialog();
+                if (userClickedOK == true)
+                {
+                    File.Copy(fileName, savefile.FileName);
+                    MessageBox.Show("Backed up");
+                }
+                
+               
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message, "error");
+            }
+        }
+
+        private void restore(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string[] connstring = ConfigurationManager.ConnectionStrings["connection"].ConnectionString.Split(';');
+                string destfileName = connstring[0].Split('=')[1];
+
+                OpenFileDialog openfile = new OpenFileDialog();
+                bool? userClickedOK = openfile.ShowDialog();
+                if (userClickedOK == true)
+                {
+                    //File.Replace(openfile.FileName, destfileName, appDir + "\\Ob\\Ob_old.sqlite");
+                    File.Copy(openfile.FileName, destfileName, true);
+                    Create();
+                    MessageBox.Show("restored");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void isOffenClicked(object sender, RoutedEventArgs e)
+        {
+            ptypeclickedFun(true);
         }
     }
 }

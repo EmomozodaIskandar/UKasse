@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Configuration;
 using System.Data.Common;
 using System.Data.SQLite;
@@ -26,13 +27,15 @@ namespace UKasse
     {
         public static SQLiteConnection? _connection;
         List<PType> pTypes = new List<PType>();
-        public AddProduct()
+        MainWindow win;
+        public AddProduct( MainWindow n)
         {
             InitializeComponent();
             try
             {
                 _connection = new SQLiteConnection(ConfigurationManager.ConnectionStrings["connection"].ConnectionString);
                 _connection.Open();
+                win = n;
                 using(SQLiteConnection connection = new SQLiteConnection(_connection))
                 {
                     SQLiteCommand cmd = new SQLiteCommand(connection);
@@ -60,9 +63,13 @@ namespace UKasse
 
         private void Cancel(object sender, RoutedEventArgs e)
         {
-            MainWindow window = new MainWindow();
-            window.ShowDialog();
+            win.Create();
             this.Close();
+        }
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            win.Create();
+            base.OnClosing(e);
         }
 
         private void Ok(object sender, RoutedEventArgs e)
@@ -91,8 +98,7 @@ namespace UKasse
                     }
                     else
                     {
-                        MainWindow window = new MainWindow();
-                        window.Show();
+                        win.Create();
                         this.Close();
                     }
                 }
