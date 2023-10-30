@@ -6,10 +6,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UKasse"
         mc:Ignorable="d"
+        WindowStyle="None"
+        AllowsTransparency="False"
+        ResizeMode="NoResize"
+        Background="#FF0CD2F4"
         Title="MainWindow"
-        WindowState="Maximized">
-    <Grid>
         
+        WindowState="Maximized">
+
+
+    <Grid >
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="250"/>
             <ColumnDefinition Width="*"/>
@@ -77,7 +84,7 @@
         </Menu>
         <DataGrid Grid.Row="1" Grid.Column="1" Name="HeadersDG" HeadersVisibility="None"  AutoGenerateColumns="False"
                   HorizontalScrollBarVisibility="Disabled"
-                  CanUserAddRows="False"
+                  CanUserAddRows="False"  Background="#FF0CD2F4"
                   VerticalScrollBarVisibility="Auto">
             <DataGrid.ColumnHeaderStyle>
                 <Style TargetType="{x:Type DataGridColumnHeader}">
@@ -99,7 +106,7 @@
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="{Binding Path=Name}" Click="PTypeClicked" Tag="{Binding Product}" Width="100" Height="80" VerticalAlignment="Bottom">
+                            <Button Content="{Binding Path=Name}" Click="PTypeClicked" Tag="{Binding Product}" Width="100" Height="80" VerticalAlignment="Bottom" materialDesign:ButtonAssist.CornerRadius="10">
                                 <Button.LayoutTransform>
                                     <RotateTransform Angle="90"/>
                                 </Button.LayoutTransform>
@@ -119,7 +126,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <DataGrid Name="ProductsDG1"
+                <DataGrid Name="ProductsDG1"  Background="#FF0CD2F4"
                            
                            
                            Grid.Column="0" AutoGenerateColumns="False" VerticalScrollBarVisibility="Disabled" CanUserAddRows="False" >
@@ -127,13 +134,13 @@
                         <DataGridTemplateColumn>
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Button Content="{Binding Path=Name}" Width="150" Height="80" Click="ProductTyped1"/>
+                                    <Button Content="{Binding Path=Name}" Width="150" Height="80" Click="ProductTyped1" materialDesign:ButtonAssist.CornerRadius="10"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
-                <DataGrid  Name="ProductsDG2" 
+                <DataGrid  Name="ProductsDG2"  Background="#FF0CD2F4"
                           CanUserAddRows="False"
                            Grid.Column="1" AutoGenerateColumns="False" VerticalScrollBarVisibility="Disabled">
                     <DataGrid.Columns>
@@ -146,33 +153,33 @@
                         </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
-                <DataGrid  Name="ProductsDG3" 
+                <DataGrid  Name="ProductsDG3"  Background="#FF0CD2F4"
                            CanUserAddRows="False"
                            Grid.Column="2" AutoGenerateColumns="False" VerticalScrollBarVisibility="Disabled">
                     <DataGrid.Columns>
                         <DataGridTemplateColumn>
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Button Content="{Binding Path=Name}" Width="150" Height="80" Click="ProductTyped3"/>
+                                    <Button Content="{Binding Path=Name}" Width="150" Height="80" Click="ProductTyped3" materialDesign:ButtonAssist.CornerRadius="10"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
-                <DataGrid  Name="ProductsDG4"
+                <DataGrid  Name="ProductsDG4"  Background="#FF0CD2F4"
                            CanUserAddRows="False" 
                            Grid.Column="3" AutoGenerateColumns="False" VerticalScrollBarVisibility="Disabled">
                     <DataGrid.Columns>
                         <DataGridTemplateColumn>
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Button Content="{Binding Path=Name}" Width="150" Height="80" Click="ProductTyped4"/>
+                                    <Button Content="{Binding Path=Name}" Width="150" Height="80" Click="ProductTyped4" materialDesign:ButtonAssist.CornerRadius="10"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
-                <DataGrid  Name="ProductsDG5" Grid.Column="4"
+                <DataGrid  Name="ProductsDG5" Grid.Column="4"  Background="#FF0CD2F4"
                            AutoGenerateColumns="False" VerticalScrollBarVisibility="Disabled"
                            CanUserAddRows="False"
                            >
@@ -180,7 +187,7 @@
                         <DataGridTemplateColumn>
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Button Content="{Binding Path=Name}" Width="150" Height="80" Click="ProductTyped5"/>
+                                    <Button Content="{Binding Path=Name}" Width="150" Height="80" Click="ProductTyped5" materialDesign:ButtonAssist.CornerRadius="10"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -200,7 +207,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <DataGrid 
+                    <DataGrid  Background="#FF0CD2F4" 
                 ItemsSource="{Binding SelectedProducts, NotifyOnSourceUpdated=True}"
                 Name="SelectedProductsDG"
                 AutoGenerateColumns="False"
@@ -214,7 +221,7 @@
                             <DataGridTemplateColumn>
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Button Style="{StaticResource MaterialDesignFloatingActionMiniSecondaryLightButton}" Click="DeleteFromList">
+                                        <Button Style="{StaticResource MaterialDesignFloatingActionMiniSecondaryLightButton}" Click="DeleteFromList" materialDesign:ButtonAssist.CornerRadius="10">
                                             <materialDesign:PackIcon Kind="AlphaXCircleOutline"/>
                                         </Button>
                                     </DataTemplate>
@@ -222,7 +229,7 @@
                             </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </DataGrid>
-                    
+
                 </Grid>
 
             </ScrollViewer>
@@ -235,13 +242,12 @@
                     </Grid.RowDefinitions>
 
                     <TextBlock Grid.Row="0" FontSize="18" FontWeight="Bold" FontStyle="Oblique" Name="PriceTextBox" Width="auto" HorizontalAlignment="Right"/>
-                    <Button Name="GoToPayButton" Content="Gesamt" FontSize="20" FontWeight="Bold" Grid.Row="1" Click="GoToPay"  />
+                    <Button Name="GoToPayButton" Content="Gesamt" FontSize="20" FontWeight="Bold" Grid.Row="1" Click="GoToPay" materialDesign:ButtonAssist.CornerRadius="5" Height="60"/>
                 </Grid>
-
             </StackPanel>
         </Grid>
-        
-        <Button Name="isOffenTab" Content="Haupt" Grid.Row="1" Grid.Column="2" Click="isOffenClicked" Width="100" Height="60" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+        <Button Name="isOffenTab" Content="Haupt" Grid.Row="1" Grid.Column="2" Click="isOffenClicked" Width="100" Height="60" VerticalAlignment="Center" HorizontalAlignment="Center" materialDesign:ButtonAssist.CornerRadius="10"/>
 
     </Grid>
 </Window>

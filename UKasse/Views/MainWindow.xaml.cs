@@ -287,7 +287,7 @@ namespace UKasse
                     {
                         strings.Add(p.Name);
                     }
-                    Pay pay = new Pay(this,strings);
+                    Pay pay = new Pay(this,strings,Convert.ToDecimal(PriceTextBox.Text));
                     pay.Show();
                     this.Visibility = Visibility.Hidden;
                 }
@@ -298,7 +298,6 @@ namespace UKasse
             }
             
         }
-
         private void AddProductViewOpen(object sender, RoutedEventArgs e)
         {
             try
@@ -312,7 +311,6 @@ namespace UKasse
                 MessageBox.Show(ex.Message + "error", "error");
             }
         }
-
         private void AddProductTypeViewOpen(object sender, RoutedEventArgs e)
         {
             try
@@ -327,7 +325,6 @@ namespace UKasse
                 MessageBox.Show(ex.Message+"Error", "error");
             }
         }
-
         private void DeleteProductsTypeEvent(object sender, RoutedEventArgs e)
         {
             try
